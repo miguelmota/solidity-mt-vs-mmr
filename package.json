@@ -1,0 +1,22 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hardhat.config.js",
+  "scripts": {
+    "test": "hardhat test",
+    "lint": "standard --fix test/*.js",
+    "build": "hardhat compile"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.4.1",
+    "ethereumjs-util": "^7.0.9",
+    "hardhat": "^2.1.1",
+    "merkletreejs": "^0.2.18"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
+}
