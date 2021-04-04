@@ -9,6 +9,7 @@ contract MMRExample {
   MMR.Tree mmr;
 
   bytes32 public rootHash;
+  bool public verified;
 
   function append(bytes32 hash) external {
     mmr.append(hash);
@@ -25,8 +26,8 @@ contract MMRExample {
       bytes32 value,
       bytes32[] memory peaks,
       bytes32[] memory siblings
-  ) external view returns(bool) {
-    return MMR.inclusionProof(
+  ) external {
+    verified = MMR.inclusionProof(
         root,
         width,
         index,

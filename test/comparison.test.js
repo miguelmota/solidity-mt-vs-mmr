@@ -23,11 +23,13 @@ describe('Test', function () {
       hashes.push(hash)
     }
 
-    const tx = await example.commit()
-    const receipt = await tx.wait()
-    total += Number(receipt.gasUsed.toString())
-    console.log('commit gas used:', receipt.gasUsed.toString())
+    let tx
+    let receipt
+
     console.log('total append gas used:', total)
+    tx = await example.commit()
+    receipt = await tx.wait()
+    console.log('commit gas used:', receipt.gasUsed.toString())
 
     const tree = new MerkleTree(hashes, keccak256, { fillDefaultHash: keccak256(Buffer.alloc(32)) })
     const index = 2
@@ -35,9 +37,12 @@ describe('Test', function () {
     const proof = tree.getHexProof(leaf)
     const root = await example.rootHash()
     const totalLeaves = hashes.length
-    const verified = await example.verify(root, leaf, index, proof, totalLeaves)
-    expect(verified).to.be.equal(true)
+    tx = await example.verify(root, leaf, index, proof, totalLeaves)
+    receipt = await tx.wait()
     console.log('proof verification gas:', receipt.gasUsed.toString())
+
+    const verified = await example.verified()
+    expect(verified).to.be.equal(true)
   }, 300 * 1000)
 
   it('MerkleMountainRange', async function () {
@@ -62,18 +67,22 @@ describe('Test', function () {
       hashes.push(hash)
     }
 
-    const tx = await example.commit()
-    const receipt = await tx.wait()
-    total += Number(receipt.gasUsed.toString())
-    console.log('commit gas used:', receipt.gasUsed.toString())
+    let tx
+    let receipt
+
     console.log('total append gas used:', total)
+    tx = await example.commit()
+    receipt = await tx.wait()
+    console.log('commit gas used:', receipt.gasUsed.toString())
 
     const index = 2
     const leaf = hashes[index - 1]
     const proof = await example.getMerkleProof(index)
-    const verified = await example.verify(proof.root, proof.width, index, leaf, proof.peakBagging, proof.siblings)
-    expect(verified).to.be.equal(true)
+    tx = await example.verify(proof.root, proof.width, index, leaf, proof.peakBagging, proof.siblings)
+    receipt = await tx.wait()
     console.log('proof verification gas:', receipt.gasUsed.toString())
+    const verified = await example.verified()
+    expect(verified).to.be.equal(true)
   }, 300 * 1000)
 })
 

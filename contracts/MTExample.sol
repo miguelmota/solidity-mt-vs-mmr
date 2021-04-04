@@ -6,6 +6,7 @@ import "./MerkleTree.sol";
 
 contract MTExample {
   bytes32 public rootHash;
+  bool public verified;
   bytes32[] public items;
 
   function append(bytes32 hash) external {
@@ -24,11 +25,7 @@ contract MTExample {
       uint256 _totalLeaves
   )
       external
-      pure
-      returns (
-          bool
-      )
   {
-    return MerkleTree.verify(_root, _leaf, _index, _siblings, _totalLeaves);
+    verified = MerkleTree.verify(_root, _leaf, _index, _siblings, _totalLeaves);
   }
 }
